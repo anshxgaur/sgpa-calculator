@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGPA Calculator</title>
+    <title>SGPA Calculator & Predictor</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d1117; color: #c9d1d9; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; background: #161b22; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .container { max-width: 900px; margin: 0 auto; background: #161b22; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
         h2 { text-align: center; color: #58a6ff; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 10px; text-align: center; border-bottom: 1px solid #30363d; }
@@ -18,6 +19,14 @@
         .grade-b { color: #d2a8ff; }
         .grade-c { color: #f2cc60; }
         .grade-d { color: #ff7b72; }
+        
+        .prediction-section { margin-top: 50px; border-top: 2px solid #30363d; padding-top: 30px; }
+        .pred-inputs { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+        .pred-inputs div { display: flex; flex-direction: column; align-items: center; font-size: 0.9em; color: #8b949e; }
+        .pred-inputs input { width: 80px; padding: 8px; margin-top: 5px; }
+        .btn-predict { background: #238636; color: white; border: none; padding: 10px 25px; border-radius: 6px; font-size: 1.1em; cursor: pointer; transition: 0.2s; }
+        .btn-predict:hover { background: #2ea043; }
+        .chart-container { position: relative; height: 400px; width: 100%; margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -31,80 +40,100 @@
                 <th>Credits</th>
                 <th>Internal Marks</th>
                 <th>External Marks</th>
-                <th>Total</th>
+                <th>Total (/100)</th>
                 <th>Grade</th>
                 <th>Points</th>
             </tr>
         </thead>
         <tbody id="calc-body">
-            <!-- Theory Subjects -->
+            <!-- Theory Subjects (30 Internal / 70 External) -->
             <tr class="course" data-credits="4">
                 <td>DBMS</td><td>4</td>
-                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
-                <td class="total">60</td><td class="grade">B</td><td class="points">28</td>
+                <td><input type="number" class="int" value="30" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="70" max="70" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">40</td>
             </tr>
             <tr class="course" data-credits="4">
                 <td>DAA</td><td>4</td>
-                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
-                <td class="total">60</td><td class="grade">B</td><td class="points">28</td>
+                <td><input type="number" class="int" value="30" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="70" max="70" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">40</td>
             </tr>
             <tr class="course" data-credits="4">
                 <td>Data Analytics</td><td>4</td>
-                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
-                <td class="total">60</td><td class="grade">B</td><td class="points">28</td>
+                <td><input type="number" class="int" value="30" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="70" max="70" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">40</td>
             </tr>
             <tr class="course" data-credits="3">
                 <td>Cloud Computing</td><td>3</td>
-                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
-                <td class="total">60</td><td class="grade">B</td><td class="points">21</td>
+                <td><input type="number" class="int" value="30" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="70" max="70" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">30</td>
             </tr>
             <tr class="course" data-credits="3">
                 <td>Data Warehousing</td><td>3</td>
-                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
-                <td class="total">60</td><td class="grade">B</td><td class="points">21</td>
+                <td><input type="number" class="int" value="30" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="70" max="70" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">30</td>
             </tr>
             <tr class="course" data-credits="0">
                 <td>Constitution of India</td><td>0</td>
-                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
-                <td class="total">60</td><td class="grade">B</td><td class="points">0</td>
+                <td><input type="number" class="int" value="30" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="70" max="70" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">0</td>
             </tr>
             
-            <!-- Practical Subjects (Scaled out of 100 for easy grading) -->
+            <!-- Practical Subjects (50 Internal / 50 External) -->
             <tr class="course" data-credits="1">
                 <td>Lab 1</td><td>1</td>
-                <td><input type="number" class="int" value="40" max="50" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="40" max="50" oninput="calculate()"></td>
-                <td class="total">80</td><td class="grade">A</td><td class="points">9</td>
+                <td><input type="number" class="int" value="50" max="50" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="50" max="50" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">10</td>
             </tr>
             <tr class="course" data-credits="1">
                 <td>Lab 2</td><td>1</td>
-                <td><input type="number" class="int" value="40" max="50" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="40" max="50" oninput="calculate()"></td>
-                <td class="total">80</td><td class="grade">A</td><td class="points">9</td>
+                <td><input type="number" class="int" value="50" max="50" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="50" max="50" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">10</td>
             </tr>
             <tr class="course" data-credits="1">
                 <td>Lab 3</td><td>1</td>
-                <td><input type="number" class="int" value="40" max="50" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="40" max="50" oninput="calculate()"></td>
-                <td class="total">80</td><td class="grade">A</td><td class="points">9</td>
+                <td><input type="number" class="int" value="50" max="50" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="50" max="50" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">10</td>
             </tr>
             <tr class="course" data-credits="2">
                 <td>Mini Project</td><td>2</td>
-                <td><input type="number" class="int" value="40" max="50" oninput="calculate()"></td>
-                <td><input type="number" class="ext" value="45" max="50" oninput="calculate()"></td>
-                <td class="total">85</td><td class="grade">A</td><td class="points">18</td>
+                <td><input type="number" class="int" value="50" max="50" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="50" max="50" oninput="calculate()"></td>
+                <td class="total">100</td><td class="grade">A+</td><td class="points">20</td>
             </tr>
         </tbody>
     </table>
 
     <div class="result-box">
-        Estimated SGPA: <span id="final-sgpa" style="color: #58a6ff;">7.43</span>
+        Estimated Current SGPA: <span id="final-sgpa" style="color: #58a6ff;">10.00</span>
+    </div>
+
+    <div class="prediction-section">
+        <h2>AKTU Future SGPA Predictor</h2>
+        <p style="text-align: center; color: #8b949e; margin-bottom: 25px;">Enter your 1st to 4th semester SGPAs. The algorithm accounts for the heavy core syllabus in 3rd year and the scoring nature of electives/projects in 4th year.</p>
+        
+        <div class="pred-inputs">
+            <div>Sem 1 <input type="number" id="sem1" step="0.01" max="10" placeholder="e.g. 7.5"></div>
+            <div>Sem 2 <input type="number" id="sem2" step="0.01" max="10" placeholder="e.g. 7.8"></div>
+            <div>Sem 3 <input type="number" id="sem3" step="0.01" max="10" placeholder="e.g. 7.2"></div>
+            <div>Sem 4 <input type="number" id="sem4" step="0.01" max="10" placeholder="e.g. 7.4"></div>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="btn-predict" onclick="predictGraph()">Generate Prediction Graph</button>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="sgpaChart"></canvas>
+        </div>
     </div>
 </div>
 
@@ -126,8 +155,19 @@
 
         rows.forEach(row => {
             const credits = parseInt(row.getAttribute('data-credits'));
-            const intMarks = parseInt(row.querySelector('.int').value) || 0;
-            const extMarks = parseInt(row.querySelector('.ext').value) || 0;
+            
+            const intInput = row.querySelector('.int');
+            const extInput = row.querySelector('.ext');
+            
+            let intMarks = parseInt(intInput.value) || 0;
+            let extMarks = parseInt(extInput.value) || 0;
+            
+            const intMax = parseInt(intInput.max) || 100;
+            const extMax = parseInt(extInput.max) || 100;
+
+            // Cap inputs strictly at their maximum values
+            if (intMarks > intMax) { intMarks = intMax; intInput.value = intMax; }
+            if (extMarks > extMax) { extMarks = extMax; extInput.value = extMax; }
             
             const total = intMarks + extMarks;
             const gradeInfo = getGradeInfo(total);
@@ -151,6 +191,83 @@
     
     // Initial run
     calculate();
+
+    let myChart = null;
+
+    function predictGraph() {
+        const s1 = parseFloat(document.getElementById('sem1').value);
+        const s2 = parseFloat(document.getElementById('sem2').value);
+        const s3 = parseFloat(document.getElementById('sem3').value);
+        const s4 = parseFloat(document.getElementById('sem4').value);
+
+        if (!s1 || !s2 || !s3 || !s4) {
+            alert("Please enter valid SGPAs for Semesters 1 through 4.");
+            return;
+        }
+
+        let momentum = (s4 - s3) * 0.4; 
+        let p5 = s4 + momentum - 0.15;
+        let p6 = p5 + 0.15;
+        let p7 = p6 + 0.45;
+        let p8 = p7 + 0.35;
+
+        const clamp = (val) => Math.min(10.0, Math.max(4.0, val)).toFixed(2);
+
+        const actualData = [s1, s2, s3, s4, null, null, null, null];
+        const predictedData = [null, null, null, s4, clamp(p5), clamp(p6), clamp(p7), clamp(p8)];
+
+        renderChart(actualData, predictedData);
+    }
+
+    function renderChart(actualData, predictedData) {
+        const ctx = document.getElementById('sgpaChart').getContext('2d');
+        
+        if (myChart != null) {
+            myChart.destroy();
+        }
+
+        Chart.defaults.color = '#8b949e';
+        Chart.defaults.borderColor = '#30363d';
+
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'],
+                datasets: [
+                    {
+                        label: 'Actual SGPA',
+                        data: actualData,
+                        borderColor: '#58a6ff',
+                        backgroundColor: '#58a6ff',
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Predicted SGPA (AKTU Trend)',
+                        data: predictedData,
+                        borderColor: '#3fb950',
+                        backgroundColor: '#3fb950',
+                        borderWidth: 3,
+                        borderDash: [5, 5],
+                        pointRadius: 5,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    y: { min: 4, max: 10, title: { display: true, text: 'SGPA' } },
+                    x: { title: { display: true, text: 'Semesters' } }
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>
