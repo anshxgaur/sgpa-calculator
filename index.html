@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGPA Calculator</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d1117; color: #c9d1d9; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: #161b22; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        h2 { text-align: center; color: #58a6ff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #30363d; }
+        th { background-color: #21262d; color: #8b949e; }
+        input { width: 60px; padding: 5px; text-align: center; background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px; }
+        input:focus { outline: none; border-color: #58a6ff; }
+        .result-box { margin-top: 30px; text-align: center; padding: 20px; background: #21262d; border-radius: 8px; font-size: 1.5em; font-weight: bold; }
+        .grade-a { color: #3fb950; }
+        .grade-b { color: #d2a8ff; }
+        .grade-c { color: #f2cc60; }
+        .grade-d { color: #ff7b72; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Target SGPA Calculator</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Credits</th>
+                <th>Internal Marks</th>
+                <th>External Marks</th>
+                <th>Total</th>
+                <th>Grade</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody id="calc-body">
+            <!-- Theory Subjects -->
+            <tr class="course" data-credits="4">
+                <td>DBMS</td><td>4</td>
+                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
+                <td class="total">60</td><td class="grade">B</td><td class="points">28</td>
+            </tr>
+            <tr class="course" data-credits="4">
+                <td>DAA</td><td>4</td>
+                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
+                <td class="total">60</td><td class="grade">B</td><td class="points">28</td>
+            </tr>
+            <tr class="course" data-credits="4">
+                <td>Data Analytics</td><td>4</td>
+                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
+                <td class="total">60</td><td class="grade">B</td><td class="points">28</td>
+            </tr>
+            <tr class="course" data-credits="3">
+                <td>Cloud Computing</td><td>3</td>
+                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
+                <td class="total">60</td><td class="grade">B</td><td class="points">21</td>
+            </tr>
+            <tr class="course" data-credits="3">
+                <td>Data Warehousing</td><td>3</td>
+                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
+                <td class="total">60</td><td class="grade">B</td><td class="points">21</td>
+            </tr>
+            <tr class="course" data-credits="0">
+                <td>Constitution of India</td><td>0</td>
+                <td><input type="number" class="int" value="25" max="30" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="35" max="70" oninput="calculate()"></td>
+                <td class="total">60</td><td class="grade">B</td><td class="points">0</td>
+            </tr>
+            
+            <!-- Practical Subjects (Scaled out of 100 for easy grading) -->
+            <tr class="course" data-credits="1">
+                <td>Lab 1</td><td>1</td>
+                <td><input type="number" class="int" value="40" max="50" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="40" max="50" oninput="calculate()"></td>
+                <td class="total">80</td><td class="grade">A</td><td class="points">9</td>
+            </tr>
+            <tr class="course" data-credits="1">
+                <td>Lab 2</td><td>1</td>
+                <td><input type="number" class="int" value="40" max="50" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="40" max="50" oninput="calculate()"></td>
+                <td class="total">80</td><td class="grade">A</td><td class="points">9</td>
+            </tr>
+            <tr class="course" data-credits="1">
+                <td>Lab 3</td><td>1</td>
+                <td><input type="number" class="int" value="40" max="50" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="40" max="50" oninput="calculate()"></td>
+                <td class="total">80</td><td class="grade">A</td><td class="points">9</td>
+            </tr>
+            <tr class="course" data-credits="2">
+                <td>Mini Project</td><td>2</td>
+                <td><input type="number" class="int" value="40" max="50" oninput="calculate()"></td>
+                <td><input type="number" class="ext" value="45" max="50" oninput="calculate()"></td>
+                <td class="total">85</td><td class="grade">A</td><td class="points">18</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="result-box">
+        Estimated SGPA: <span id="final-sgpa" style="color: #58a6ff;">7.43</span>
+    </div>
+</div>
+
+<script>
+    function getGradeInfo(total) {
+        if (total >= 90) return { grade: 'A+', points: 10, color: 'grade-a' };
+        if (total >= 80) return { grade: 'A', points: 9, color: 'grade-a' };
+        if (total >= 70) return { grade: 'B+', points: 8, color: 'grade-a' };
+        if (total >= 60) return { grade: 'B', points: 7, color: 'grade-b' };
+        if (total >= 50) return { grade: 'C', points: 6, color: 'grade-c' };
+        if (total >= 40) return { grade: 'D', points: 5, color: 'grade-c' };
+        return { grade: 'F', points: 0, color: 'grade-d' };
+    }
+
+    function calculate() {
+        let totalCredits = 0;
+        let totalGradePoints = 0;
+        const rows = document.querySelectorAll('.course');
+
+        rows.forEach(row => {
+            const credits = parseInt(row.getAttribute('data-credits'));
+            const intMarks = parseInt(row.querySelector('.int').value) || 0;
+            const extMarks = parseInt(row.querySelector('.ext').value) || 0;
+            
+            const total = intMarks + extMarks;
+            const gradeInfo = getGradeInfo(total);
+            const rowPoints = gradeInfo.points * credits;
+
+            row.querySelector('.total').innerText = total;
+            
+            const gradeCell = row.querySelector('.grade');
+            gradeCell.innerText = gradeInfo.grade;
+            gradeCell.className = `grade ${gradeInfo.color}`;
+            
+            row.querySelector('.points').innerText = rowPoints;
+
+            totalCredits += credits;
+            totalGradePoints += rowPoints;
+        });
+
+        const sgpa = totalCredits === 0 ? 0 : (totalGradePoints / totalCredits).toFixed(2);
+        document.getElementById('final-sgpa').innerText = sgpa;
+    }
+    
+    // Initial run
+    calculate();
+</script>
+</body>
+</html>
